@@ -1,6 +1,5 @@
 import connection from "../connect/config.mjs";
 
-// Database query function
 function fetchProduct(productId) {
   return new Promise((resolve, reject) => {
     const sql = `CALL getOneProduct(?)`;
@@ -15,7 +14,6 @@ function fetchProduct(productId) {
   });
 }
 
-// Express route handler for fetching a product
 function getProduct(req, res) {
   const productId = req.params.id; 
   fetchProduct(productId)
