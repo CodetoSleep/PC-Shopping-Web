@@ -10,13 +10,12 @@ const createToken = (id) => {
     });
 };
 const sendToken = (user, req, res) => {
-    const token = createToken(user._id);
+    const token = createToken(user.id);
     res.cookie('jwt', token, {
         //httpOnly: true,
         expires: new Date(
             Date.now() + process.env.COOKIE_JWT_EXPIRE_IN * 24 * 3600 * 1000
         ),
-        // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
     });
     res.status(201).json({
         status: 'success',
@@ -27,20 +26,26 @@ const sendToken = (user, req, res) => {
 const login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
-    const check = await user.correctPassword(password, user.password);
+    const check = await correctPassword(password, user.password);
     if (!check || !user)
         return next(new appError('Can not find user with that email', 404));
     sendToken(user, req, res);
 });
 const signup = catchAsync(async (req, res, next) => {
     const { name, password, email, passwordConfirm } = req.body;
-    const newUser = await User.create({
+    // const newUser = await User.create({
+    //     name,
+    //     email,
+    //     password,
+    //     passwordConfirm,
+    //     passwordChangeAt: new Date(Date.now()),
+    // });
+    const newUser = await createUser(
         name,
         email,
         password,
-        passwordConfirm,
-        passwordChangeAt: new Date(Date.now()),
-    });
+        passwordConfirm
+    )
     sendToken(newUser, req, res);
 });
 const logout = catchAsync(async (req, res, next) => {
@@ -93,7 +98,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
         return next(new appError('User does not exist'), 401);
     }
     //2. Generate the random reset token
-    const resetToken = user.createResetPassToken();
+    const resetToken = createResetPassToken();
     await user.save({ validateBeforeSave: false });
     //3. Send token to user's email
     //     try {
@@ -138,9 +143,10 @@ const resetPassword = catchAsync(async (req, res, next) => {
 });
 const updatePassword = catchAsync(async (req, res, next) => {
     //1. Get user from collection
-    const user = await User.findById(req.user._id).select('+password');
+    //const user = await User.findById(req.user._id).select('+password');
+    const user = await getOneUser(req.user.id);
     //2. Check if POSTED password is correct
-    const correct = await user.correctPassword(
+    const correct = await correctPassword(
         req.body.passwordCurrent,
         user.password
     );
@@ -148,9 +154,10 @@ const updatePassword = catchAsync(async (req, res, next) => {
         return next(new appError('Your current password is wrong', 401));
     }
     //3. If correct, update password
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
-    await user.save();
+    // user.password = req.body.password;
+    // user.passwordConfirm = req.body.passwordConfirm;
+    // await user.save();
+    await updateUserPassword(user.id, req.body.password, req.body.passwordConfirm);
     //4. Log user in, send JWT
     sendToken(user, req, res);
 });
@@ -187,6 +194,25 @@ const isLoggedIn = async (req, res, next) => {
         return next();
     }
 };
+
+const correctPassword = async function (candidatePass, userPass) {
+    return await bcrypt.compare(candidatePass, userPass);
+};
+
+const createResetPassToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+    this.passwordResetExpires = Date.now() + 10 * 60000;
+
+    return resetToken;
+};
+
+const hashPassword = async (password) => {
+    return await bcrypt.hash(password, 12);
+}
 export {
     login,
     logout,

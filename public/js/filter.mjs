@@ -31,10 +31,10 @@ const addQuery = (attributes) => () => {
     const url = `${req.dataset.path}?${queryString}`;
     window.location.replace(url);
 };
-ascPriceBtn.onclick = addQuery({ sort: '-new_price' });
-desPriceBtn.onclick = addQuery({ sort: 'new_price' });
-desRateBtn.onclick = addQuery({ sort: '-sold' });
-availableBtn.onclick = addQuery({ available: true });
+ascPriceBtn.onclick = addQuery({ sortPrice: 1 });
+desPriceBtn.onclick = addQuery({ sortPrice: 0 });
+desRateBtn.onclick = addQuery({ sortRating: 1 });
+availableBtn.onclick = addQuery({ available: 1 });
 cpuBtns.forEach((btn) => {
     btn.onclick = addQuery({ cpu_type: btn.dataset.cpu });
 });
@@ -46,12 +46,11 @@ priceBtns.forEach((btn) => {
 });
 ramBtns.forEach((btn) => {
     btn.onclick = addQuery({
-        minRam: btn.dataset.minram,
-        maxRam: btn.dataset.maxram,
+        ram: btn.dataset.ram,
     });
 });
 manufacturerBtns.forEach((btn) => {
-    btn.onclick = addQuery({ manufacturer: btn.dataset.manu });
+    btn.onclick = addQuery({ nsx: btn.dataset.manu });
 });
 paginationBtns.forEach((btn) => {
     btn.onclick = () => {

@@ -2,7 +2,7 @@ import { getProduct } from "../connect/product_connect.mjs"; // Replace with the
 
 const req = {
   params: {
-    id: 123, // Replace with the specific product ID you want to test
+    id: 1, // Replace with the specific product ID you want to test
   },
 };
 
@@ -21,4 +21,4 @@ const res = {
   },
 };
 
-getProduct(req, res);
+console.log(getProduct(1));

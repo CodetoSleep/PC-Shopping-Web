@@ -1,44 +1,33 @@
 import connection from "../connect/config.mjs";
 
-function getProduct(req, res) {
-  const productId = req.params.id;
-  const sql = `CALL getOneProduct(?)`;
+function getProduct(productId) {
+  return new Promise((resolve, reject) => {
+    const sql = `CALL getOneProduct(?)`;
 
-  connection.query(sql, [productId], (err, result) => {
-    if (err) {
-      console.error('Error:', err);
-      return res.status(500).json({
-        status: 'error',
-        message: 'Failed to fetch product',
-      });
-    }
+    connection.query(sql, [productId], (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+        reject({ message: 'error' });
+      } else {
+        const products = result[0][0];
 
-    const products = result[0];
-    products.forEach((product, index) => {
-      console.log(`Product ${index + 1}:`, product);
-    });
-
-    res.json({
-      data: {
-        products,
-      },
+        resolve({ product: products });
+      }
     });
   });
 }
 
 
-function getAllProducts(page, minPrice, maxPrice, ram, nsx, sortPrice, sortRating, sortSold, available) {
+function getAllProducts({page = null, minPrice = null, maxPrice = null, ram = null, nsx = null, sortPrice =1, sortRating=1, sortSold=1, available=1}) {
   return new Promise((resolve, reject) => {
     const sql = 'CALL getAllProducts(?, ?, ?, ?, ?, ?, ?, ?, ?)';
     connection.query(sql, [page, minPrice, maxPrice, ram, nsx, sortPrice, sortRating, sortSold, available], (err, result) => {
       if (err) {
         reject(err);
+        reject({message: "error"});
       } else {
-        const products = result[0];
-        products.forEach((product, index) => {
-          console.log(`Product ${index + 1}:`, product);
-        });
-        resolve(products); // Assuming the result is an array of products
+        console.log(result[0])
+        resolve({products: result[0], message: "success"}); // Assuming the result is an array of products
       }
     });
   });
@@ -180,7 +169,7 @@ function deleteProduct(p_product_id) {
   });
 }
 
-export { 
+export default { 
   getProduct,
   getAllProducts,
   updateProduct,

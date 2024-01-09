@@ -33,16 +33,16 @@ block content
                             td #{product.manufacturer_year}
                         tr
                             th Tên sản phẩm
-                            td #{product.name_model}
+                            td #{product.product_name}
                         tr
                             th CPU
                             td #{product.cpu}
                         tr
                             th GPU
-                            if product.gpu.onboard == true
+                            if product.gpu_onboard == 1
                                 td Onboard
                             else
-                                td #{product.gpu.name}
+                                td #{product.gpu_name}
                         tr
                             th RAM
                             td #{product.ram}GB
@@ -67,16 +67,16 @@ block content
                                             td #{product.manufacturer_year}
                                         tr
                                             th Tên sản phẩm
-                                            td #{product.name_model}
+                                            td #{product.product_name}
                                         tr
                                             th CPU
                                             td #{product.cpu}
                                         tr
                                             th GPU
-                                            if product.gpu.onboard == true
+                                            if product.gpu_onboard == 1
                                                 td Onboard
                                             else
-                                                td #{product.gpu.name}
+                                                td #{product.gpu_name}
                                         tr
                                             th RAM
                                             td #{product.ram}GB
@@ -96,9 +96,6 @@ block content
                                             th Trọng lượng
                                             td #{product.weight}kg
                                         tr
-                                            th Camera
-                                            td #{product.camera}
-                                        tr
                                             th Màu
                                             td #{product.color}
                                         tr
@@ -106,14 +103,14 @@ block content
                                             td #{product.material}
 
                 .col-lg-5.col-md-7.col-sm-12
-                    h5 #{product.name_model} (#{product.cpu} | #{product.ram}GB | #{product.ssd}GB | #{product.display.size}inch | #{product.operating_system} | #{product.color})
+                    h5 #{product.name_model} (#{product.cpu} | #{product.ram}GB | #{product.ssd}GB | #{product.display} | #{product.operating_system} | #{product.color})
                     p 
                         - let star = 0
-                        while ++star <= product.rating.average
+                        while ++star <= product.rating_average
                             i.fa-solid.fa-star.text-warning
                         while star++ <=5 
                             i.fa-solid.fa-star.text-secondary
-                        span.small &nbsp&nbspLượt đánh giá: #{product.rating.amount}
+                        span.small &nbsp&nbspLượt đánh giá: #{product.rating_amount}
                         span &nbsp&nbsp&nbsp&nbsp&nbsp   
                         span.small Lượt mua: #{product.sold}
                     p.d-none.d-md-block  
@@ -127,13 +124,13 @@ block content
                         span  &nbsp&nbsp SSD: #{product.ssd}GB
                         br
                         i.fa-solid.fa-circle-check.text-warning
-                        if product.gpu.onboard == true 
+                        if product.gpu_onboard == 1 
                             span  &nbsp&nbsp VGA: Onboard
                         else
-                            span  &nbsp&nbsp VGA: #{product.gpu.name}
+                            span  &nbsp&nbsp VGA: #{product.gpu_name}
                         br
                         i.fa-solid.fa-circle-check.text-warning
-                        span  &nbsp&nbsp Màn hình: #{product.display.size}inch #{product.display.type}, #{product.display.brightness}nits
+                        span  &nbsp&nbsp Màn hình: #{product.display}
                         br
                         i.fa-solid.fa-circle-check.text-warning
                         span  &nbsp&nbsp Hệ điều hành: #{product.operating_system}
@@ -149,10 +146,10 @@ block content
                         table
                             tr 
                                 td(style="min-width: 120px"): span.small Giá niêm yết: 
-                                td: span.font-weight-bold.line-through.text-secondary #{(product.price).toLocaleString('en-US')}đ
+                                td: span.font-weight-bold.line-through.text-secondary #{(parseInt(product.old_price) * 1000).toLocaleString('en-US')} đ
                             tr 
                                 td: span.small Giá khuyến mãi:
-                                td: span.h5.font-weight-bolder.text-danger #{(product.new_price).toLocaleString('en-US')}đ
+                                td: span.h5.font-weight-bolder.text-danger #{(parseInt(product.new_price) * 1000).toLocaleString('en-US')} đ
                             tr 
                                 td
                                 td

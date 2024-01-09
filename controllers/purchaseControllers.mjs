@@ -6,15 +6,25 @@ import Stripe from 'stripe';
 
 const purchaseItem = catchAsync(async (req, res, next) => {
     const { userId, itemId } = req.body;
-    const user = await User.findById(userId).select('+items');
-    if (!user.items.includes(itemId)) {
-        user.items.push(itemId);
-        await user.save({ validateBeforeSave: false });
-    }
+    
+    // const user = await User.findById(userId).select('+items');
+    // if (!user.items.includes(itemId)) {
+    //     user.items.push(itemId);
+    //     await user.save({ validateBeforeSave: false });
+    // }
+    await addItemToCart(itemId, userId);
     res.status(200).json({
         status: 'success',
     });
 });
+
+const addDeliveryFromCart = catchAsync(async (req,res, next) => {
+    const cart = req.params.cart;
+    await addDelivery(cart);
+    res.status(200).json({
+        status: 'success'
+    })
+})
 const deletePurchase = catchAsync(async (req, res, next) => {
     const { userId, itemId } = req.body;
     const user = await User.findById(userId).select('+items');
@@ -64,4 +74,4 @@ const checkOutSession = catchAsync(async (req, res) => {
     });
 });
 
-export { checkOutSession, purchaseItem, deletePurchase };
+export { checkOutSession, purchaseItem, deletePurchase, addDeliveryFromCart };

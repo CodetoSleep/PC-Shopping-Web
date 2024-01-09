@@ -16,11 +16,8 @@ const purchaseItems = async (total) => {
             localStorage.setItem('cart', []);
         } else {
             await axios({
-                method: 'PATCH',
-                url: '/api/users/updateMe',
-                data: {
-                    items: [],
-                },
+                method: 'GET',
+                url: `/api/purchase/add-delivery/${user.id}`,
             });
         }
     } catch (error) {

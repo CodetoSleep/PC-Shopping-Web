@@ -1,34 +1,38 @@
-import Product from '../models/productModel.mjs';
 import catchAsync from '../ultils/catchAsync.mjs';
 import appError from '../ultils/appError.mjs';
-import Store from '../models/storeModel.mjs';
 import apiFeatures from '../ultils/APIFeatures.mjs';
+import productControllers from '../connect/product_connect.mjs';
 const getOverview = catchAsync(async (req, res) => {
-    //EXECUTE QUERY
-    if (!req.query.limit) req.query.limit = 16;
-    const features = new apiFeatures(Product.find(), req.query)
-        .filter()
-        .sort()
-        .limit()
-        .paginate();
-    const laptops = await features.query;
-    const stores = await Store.find({});
-    const pageCurrent = req.query.page || 1;
+    // //EXECUTE QUERY
+    // if (!req.query.limit) req.query.limit = 16;
+    // const features = new apiFeatures(Product.find(), req.query)
+    //     .filter()
+    //     .sort()
+    //     .limit()
+    //     .paginate();
+    // const laptops = await features.query;
+    // const stores = await Store.find({});
+    // const pageCurrent = req.query.page || 1;
+    const page = req.query.page || 1;
+    const {products: laptops, message} = await productControllers.getAllProducts(req.query);
+    if(message == 'error') {
+        return next(new appError("The is no product founded"), 404);
+    }
+
     res.status(200).render('overview', {
         title: 'Laptop An Phát 2023 Ưu đãi ngập tràn',
         laptops,
-        pageCurrent,
+        pageCurrent: parseInt(page),
         req,
-        stores,
     });
 });
 const getProduct = catchAsync(async (req, res, next) => {
-    const product = await Product.findOne({ slug: req.params.slug });
+    const product = await productControllers.getProduct(parseInt(req.params.id));
     if (!product) next(new appError('There is no product with that name', 404));
 
     res.status(200).render('product', {
-        title: product.name,
-        product,
+        title: product.product.product_name,
+        product: product.product,
     });
 });
 const getLoginForm = (req, res) => {

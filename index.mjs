@@ -18,14 +18,14 @@ dotenv.config({ path: './config.env' });
 //     console.log('Database connected sucessfully!');
 // });
 
-const db = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : '22102003',
-    database : 'my_db'
-  });
+// const db = mysql.createConnection({
+//     host     : 'localhost',
+//     user     : 'root',
+//     password : '22102003',
+//     database : 'my_db'
+//   });
    
-connection.connect();
+// connection.connect();
 
 //Listen server
 

@@ -11,7 +11,6 @@ import {
 const Router = express.Router();
 
 Router.route('/').get(getAllProducts);
-Router.route('/top-seller-product').get(topSellerProduct, getAllProducts);
 Router.route('/:id').get(getProduct).patch(updateProduct).delete(deleteProduct);
 
 export default Router;
