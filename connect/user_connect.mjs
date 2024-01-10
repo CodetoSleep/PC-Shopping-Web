@@ -10,17 +10,22 @@ function createUser({
 }) {
     return new Promise((resolve, reject) => {
         const sql = `CALL createUser(?,?,?,?,?,?)`;
+ 
         connection.query(
             sql, [p_email, p_phone, p_address, p_name, p_password, p_password_confirm],
             (error, results, fields) => {
                 if (error) {
-                    return reject(error);
+                    reject(error);
+                } else {
+                    resolve(results);
                 }
-                return resolve(results);
             }
         );
     });
 }
+
+
+
 
 function updateUser({
     p_user_id,
