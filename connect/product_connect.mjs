@@ -1,5 +1,75 @@
 import connection from "../connect/config.mjs";
 
+function createProduct({
+  p_product_name,
+  p_new_price,
+  p_old_price = 0,
+  p_discount_percentage,
+  p_weight,
+  p_display,
+  p_cpu,
+  p_cpu_type,
+  p_gpu_name,
+  p_gpu_onboard,
+  p_ram,
+  p_ssd,
+  p_hdd = 256,
+  p_operating_system,
+  p_color,
+  p_battery,
+  p_camera,
+  p_rating_average,
+  p_rating_amount,
+  p_available,
+  p_sold = 0,
+  p_manufacturer,
+  p_manufacturer_year = 2022,
+  p_material,
+  p_stock_quantity
+}) {
+  return new Promise((resolve, reject) => {
+    const sql = `CALL createProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    connection.query(
+      sql,
+      [
+        p_product_name,
+        p_new_price,
+        p_old_price,
+        p_discount_percentage,
+        p_weight,
+        p_display,
+        p_cpu,
+        p_cpu_type,
+        p_gpu_name,
+        p_gpu_onboard,
+        p_ram,
+        p_ssd,
+        p_hdd,
+        p_operating_system,
+        p_color,
+        p_battery,
+        p_camera,
+        p_rating_average,
+        p_rating_amount,
+        p_available,
+        p_sold,
+        p_manufacturer,
+        p_manufacturer_year,
+        p_material,
+        p_stock_quantity
+      ],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve('success');
+        }
+      }
+    );
+  });
+}
+
+
 function getProduct(productId) {
   return new Promise((resolve, reject) => {
     const sql = `CALL getOneProduct(?)`;
@@ -171,6 +241,7 @@ function deleteProduct(p_product_id) {
 
 getAllProducts({page: 1, ram: 8})
 export default { 
+  createProduct,
   getProduct,
   getAllProducts,
   updateProduct,

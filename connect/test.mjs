@@ -21,7 +21,7 @@ const res = {
   },
 };
 
-const update = {
+const create = {
   p_product_name: 'Acer Swift 123456',
   p_new_price: 480,
   p_discount_percentage: 10,
@@ -37,10 +37,12 @@ const update = {
   p_cpu_type: 'i3',
   p_available: 1,
   p_gpu_onboard: 1,
-  p_product_id: '65'
+  p_hdd: 256,
+  p_product_id: '65',
+  p_stock_quantity: 100,
 }
 const test =  async () => {
-  const result = await productControllers.deleteProduct(59);
+  const result = await productControllers.createProduct(create);
   console.log(result)
 }
 test();
