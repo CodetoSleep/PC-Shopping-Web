@@ -1,20 +1,10 @@
 import catchAsync from '../ultils/catchAsync.mjs';
 import appError from '../ultils/appError.mjs';
-import apiFeatures from '../ultils/APIFeatures.mjs';
-import productControllers from '../connect/product_connect.mjs';
+ import productControllers from '../connect/product_connect.mjs';
 const getOverview = catchAsync(async (req, res) => {
-    // //EXECUTE QUERY
-    // if (!req.query.limit) req.query.limit = 16;
-    // const features = new apiFeatures(Product.find(), req.query)
-    //     .filter()
-    //     .sort()
-    //     .limit()
-    //     .paginate();
-    // const laptops = await features.query;
-    // const stores = await Store.find({});
-    // const pageCurrent = req.query.page || 1;
     const page = req.query.page || 1;
     const {products: laptops, message} = await productControllers.getAllProducts(req.query);
+    //console.log(laptops);
     if(message == 'error') {
         return next(new appError("The is no product founded"), 404);
     }
@@ -28,11 +18,25 @@ const getOverview = catchAsync(async (req, res) => {
 });
 const getProduct = catchAsync(async (req, res, next) => {
     const product = await productControllers.getProduct(parseInt(req.params.id));
+    console.log(product)
     if (!product) next(new appError('There is no product with that name', 404));
-
     res.status(200).render('product', {
-        title: product.product.product_name,
+        title: product.product? product.product.product_name : "Không tìm thấy sản phẩm",
         product: product.product,
+    });
+});
+
+const getManageProduct = catchAsync(async (req, res) => {
+    const page = req.query.page || 1;
+    const {products: laptops, message} = await productControllers.getAllProducts(req.query);
+    if(message == 'error') {
+        return next(new appError("The is no product founded"), 404);
+    }
+    res.status(200).render('manage', {
+        title: 'Quản lí kho',
+        laptops,
+        pageCurrent: parseInt(page),
+        req,
     });
 });
 const getLoginForm = (req, res) => {
@@ -71,4 +75,5 @@ export {
     changePassword,
     getSignupForm,
     getMyCart,
+    getManageProduct
 };

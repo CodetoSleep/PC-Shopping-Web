@@ -1,46 +1,48 @@
-import Product from '../models/productModel.mjs';
 import catchAsync from '../ultils/catchAsync.mjs';
 import appError from '../ultils/appError.mjs';
-import {
-    createOne,
-    deleteOne,
-    getAll,
-    getOne,
-    updateOne,
-} from './handleFactory.mjs';
+import dbController from '../connect/product_connect.mjs'
 
-const getProduct = getOne(Product);
-const getAllProducts = getAll(Product);
-// const createProduct = createOne(Product);
-// const updateProduct = updateOne(Product);
-// const deleteProduct = deleteOne(Product);
 
 
 const createProduct = catchAsync(async (req, res, next) => {
-    const {productName, nsx, price, display, cpuName,
-        cpuType, gpuName, gpuOnBoard, ram, ssd, os, stockQtn} = req.body;
-    await createProduct(productName, nsx, price, display, cpuName,
-        cpuType, gpuName, OnBoard, ram, ssd, os, stockQtn);
-    res.status(200).json({
-        status: "success"
-    })
+    const message = await dbController.createProduct(req.body);
+    if(message === 'success') {
+        res.status(200).json({
+            status: "success"
+        })    
+    } else {
+        // console.log(message)
+        res.status(500).json({
+            status: "error"
+        })
+    }
 })
 const updateProduct = catchAsync(async (req, res, next) => {
-    const {productId} = req.query.id;
-    const {productName, nsx, price, display, cpuName,
-        cpuType, gpuName, gpuOnBoard, ram, ssd, os, stockQtn} = req.body;
-    await updateProduct(productId, productName, nsx, price, display, cpuName,
-        cpuType, gpuName, gpuOnBoard, ram, ssd, os, stockQtn);
-    res.status(200).json({
-        status: "success"
-    })    
+    const message = await dbController.updateProduct(req.body);
+    if(message === 'success') {
+        res.status(200).json({
+            status: "success"
+        })    
+    } else {
+        // console.log(message)
+        res.status(500).json({
+            status: "error"
+        })
+    }
 })
 const deleteProduct = catchAsync(async (req, res, next) => {
-    const {productId} = req.query.id;
-    await deleteProduct(productId);
-    res.status(200).json({
-        status: "success"
-    }) 
+    console.log(req.body)
+    const message = await dbController.deleteProduct(req.body.id);
+    if(message === 'success') {
+        res.status(200).json({
+            status: "success"
+        })    
+    } else {
+        // console.log(message)
+        res.status(500).json({
+            status: "error"
+        })
+    }
 })
 const topSellerProduct = catchAsync(async (req, res, next) => {
     req.query.page = '1';
@@ -50,8 +52,8 @@ const topSellerProduct = catchAsync(async (req, res, next) => {
 });
 
 export {
-    getProduct,
-    getAllProducts,
+    // getProduct,
+    // getAllProducts,
     createProduct,
     deleteProduct,
     updateProduct,

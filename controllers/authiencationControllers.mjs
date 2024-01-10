@@ -189,7 +189,7 @@ const isLoggedIn = async (req, res, next) => {
         res.locals.user = null;
         next();
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.locals.user = null;
         return next();
     }

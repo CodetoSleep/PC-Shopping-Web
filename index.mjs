@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import app from './app.mjs';
 import mysql from 'mysql';
 process.on('uncaughtException', (err) => {
-    console.log(err.name, err.message);
+    // console.log(err.name, err.message);
     process.exit(1);
 });
 dotenv.config({ path: './config.env' });
@@ -35,7 +35,7 @@ const server = app.listen(port, () => {
 });
 
 process.on('unhandledRejection', (err) => {
-    console.log(err.name, err.message);
+    // console.log(err.name, err.message);
     server.close(() => {
         process.exit(1);
     });
