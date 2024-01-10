@@ -7,7 +7,7 @@ block content
             .col-lg-8.p-3 
                 form(class="needs-validation form-signup" novalidate)
                     .form-group
-                        label(for='exampleInputEmail1') Tên đăng nhập
+                        label(for='exampleInputEmail1') Tên người dùng
                         input#name.form-control(type='text' aria-describedby='emailHelp' required )
                         .invalid-feedback
                             Please Chưa có tên
@@ -26,6 +26,16 @@ block content
                         input#passwordConfirm.form-control(type='password' required)
                         .invalid-feedback
                             Please Chưa có mật khẩu xác nhận hoặc mật khẩu xác nhận không chính xác
+                    .form-group
+                        label(for='exampleInputPassword1') Số điện thoại 
+                        input#phone.form-control(type='text' required)
+                        .invalid-feedback
+                            Please Chưa có số điện thoại 
+                    .form-group
+                        label(for='exampleInputPassword1') Địa chỉ
+                        input#address.form-control(type='text' required)
+                        .invalid-feedback
+                            Please Chưa có địa chỉ
                     button.mr-3.btn.btn-primary(type='submit') Đăng kí!
                     a(href="/login") Đã có tài khoản?
             .col-lg-2 

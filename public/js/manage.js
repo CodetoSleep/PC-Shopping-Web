@@ -1,6 +1,11 @@
-const getProductFromForm = (id) => {
+const getProductFromForm = (id = -1) => {
     const formValues = {};
-    const formElement = document.querySelector(`form#update-form${id}`);
+    var formElement;
+    if(id > -1) {
+        formElement = document.querySelector(`form#update-form${id}`);
+    } else {
+        formElement = document.querySelector(`form#create-form`);
+    }
     // console.log(`form#update-form${id}`);
     formValues['p_product_name'] = formElement.querySelector('input#p_product_name').value;
     formValues['p_new_price'] = parseInt(formElement.querySelector('input#p_new_price').value);
@@ -49,7 +54,7 @@ updateBtn.forEach(e => {
     }
 })
 
-const deleteBtns = document.querySelectorAll('button.btn.btn-primary.btn-delete');
+const deleteBtns = document.querySelectorAll('button.btn.btn-danger.btn-delete');
 deleteBtns.forEach(e => {
     e.onclick = () => {
         deleteProduct(e.dataset.id);
@@ -57,6 +62,7 @@ deleteBtns.forEach(e => {
 })
 
 const deleteProduct = async (id) => {
+    console.log(id);
     try {
         const res = await axios({
             method: 'PATCH',
@@ -64,10 +70,31 @@ const deleteProduct = async (id) => {
             data: {id}
         });
         if (res.data.status === 'success') {
-            showAlert('success', 'Updated successfully!');
+            showAlert('success', 'Delete successfully!');
         }
     } catch (err) {
         console.log(err)
         showAlert('error', 'Invalid Delete');
     }
 };
+
+const createProduct = async () => {
+    try {
+        const res = await axios({
+            method: 'PATCH',
+            url: '/api/products/create',
+            data: getProductFromForm()
+        });
+        if (res.data.status === 'success') {
+            showAlert('success', 'Created successfully!');
+        }
+    } catch (err) {
+        console.log(err)
+        showAlert('error', 'Invalid Creation');
+    }
+};
+
+const createbtn = document.querySelector('button.btn.btn-primary.btn-create')
+createbtn.onclick = () => {
+    createProduct()
+}

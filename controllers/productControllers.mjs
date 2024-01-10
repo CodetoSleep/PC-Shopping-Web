@@ -44,18 +44,10 @@ const deleteProduct = catchAsync(async (req, res, next) => {
         })
     }
 })
-const topSellerProduct = catchAsync(async (req, res, next) => {
-    req.query.page = '1';
-    req.query.limit = '5';
-    req.query.sort = '-ratingAvg, price';
-    next();
-});
+
 
 export {
-    // getProduct,
-    // getAllProducts,
     createProduct,
     deleteProduct,
     updateProduct,
-    topSellerProduct,
 };

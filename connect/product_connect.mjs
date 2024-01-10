@@ -2,8 +2,8 @@ import connection from "../connect/config.mjs";
 
 function createProduct({
   p_product_name,
-  p_new_price,
-  p_old_price = 0,
+  p_old_price,
+  p_new_price = 0,
   p_discount_percentage,
   p_weight,
   p_display,
@@ -33,7 +33,7 @@ function createProduct({
       sql,
       [
         p_product_name,
-        p_new_price,
+        p_old_price * (100 - p_discount_percentage) / 100,
         p_old_price,
         p_discount_percentage,
         p_weight,
@@ -239,7 +239,6 @@ function deleteProduct(p_product_id) {
 }
 
 
-getAllProducts({page: 1, ram: 8})
 export default { 
   createProduct,
   getProduct,

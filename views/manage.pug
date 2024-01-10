@@ -81,59 +81,59 @@ block content
                                 .modal-dialog
                                     .modal-content.bg-white
                                         .modal-header.bg-white
-                                            h5(id = `createModalLabel`).modal-title Modal title
+                                            h5(id = `createModalLabel`).modal-title Thêm sản phẩm mới
                                             button.close(type='button' data-dismiss='modal' aria-label='Close')
                                             span(aria-hidden='true') &times;
                                         .modal-body.bg-white
-                                            form(id =`update-form` data-product = ``)
+                                            form(id =`create-form` data-product = ``)
                                                 .form-group
-                                                    label(for='p_product_name') Name
+                                                    label(for='p_product_name') Tên sản phẩm
                                                     input#p_product_name.form-control(type='text')
                                                 .form-group
-                                                    label(for='p_new_price') Price
+                                                    label(for='p_new_price') Giá
                                                     input#p_new_price.form-control(type='text' )
                                                 .form-group
-                                                    label(for='p_discount_percentage') Discount Percentage
+                                                    label(for='p_discount_percentage') Phần trăm giảm giá
                                                     input#p_discount_percentage.form-control(type='text' )
                                                 .form-group
-                                                    label(for='p_display') Display
+                                                    label(for='p_display') Màn hình
                                                     input#p_display.form-control(type='text' )
                                                 .form-group
                                                     label(for='p_cpu') CPU
                                                     input#p_cpu.form-control(type='text' )
                                                 .form-group
+                                                    label(for='p_cpu_type') Loại CPU
+                                                    select#p_cpu_type.form-control
+                                                        each cpu in ['i3', 'i5', 'i7', 'r3', 'r5', 'r7']
+                                                            option(value=`${cpu}` ) #{cpu}     
+                                                .form-group
                                                     label(for='p_gpu_name') GPU
                                                     input#p_gpu_name.form-control(type='text')
+                                                .form-group
+                                                    label(for='p_gpu_onboard') Loại GPU
+                                                    select#p_gpu_onboard.form-control
+                                                        option(value = '1') Onboard
+                                                        option(value = '0' selected='selected') Card rời
                                                 .form-group
                                                     label(for='p_ram') RAM
                                                     input#p_ram.form-control(type='text')
                                                 .form-group
-                                                    label(for='p_manufacturer') Manufacturer
+                                                    label(for='p_manufacturer') Nhà sản xuất
                                                     input#p_manufacturer.form-control(type='text' )
                                                 .form-group
-                                                    label(for='p_stock_quantity') Stock Quantity
+                                                    label(for='p_stock_quantity') Số lượng tồn kho
                                                     input#p_stock_quantity.form-control(type='text' )
                                                 .form-group
-                                                    label(for='p_material') Material
+                                                    label(for='p_material') Chất liệu
                                                     input#p_material.form-control(type='text')
                                                 .form-group
                                                     label(for='p_ssd') SSD
                                                     input#p_ssd.form-control(type='text' )
                                                 .form-group
-                                                    label(for='p_operating_system') OS
+                                                    label(for='p_operating_system') Hệ điều hành
                                                     input#p_operating_system.form-control(type='text')
                                                 .form-group
-                                                    label(for='p_cpu_type') CPU type
-                                                    select#p_cpu_type.form-control
-                                                        each cpu in ['i3', 'i5', 'i7', 'r3', 'r5', 'r7']
-                                                            option(value=`${cpu}` ) #{cpu}     
-                                                .form-group
-                                                    label(for='p_gpu_onboard') CPU type
-                                                    select#p_gpu_onboard.form-control
-                                                        option(value = '1') Onboard
-                                                        option(value = '0' selected='selected') Card rời
-                                                .form-group
-                                                    label(for='p_available') CPU type
+                                                    label(for='p_available') Tình trạng hàng
                                                     select#p_available.form-control
                                                         option(value = '1' selected='selected') Cho phép bán
                                                         option(value = '0') Ngưng bán
@@ -166,49 +166,28 @@ block content
                                                 .modal-dialog
                                                     .modal-content.bg-white
                                                         .modal-header.bg-white
-                                                            h5(id = `exampleModalLabel${laptop.product_id}`).modal-title Modal title
+                                                            h5(id = `exampleModalLabel${laptop.product_id}`).modal-title Cập nhật thông tin sản phẩm
                                                             button.close(type='button' data-dismiss='modal' aria-label='Close')
                                                             span(aria-hidden='true') &times;
                                                         .modal-body.bg-white
                                                             form(id =`update-form${laptop.product_id}` data-product = `${laptop.product_id}`)
                                                                 .form-group
-                                                                    label(for='p_product_name') Name
+                                                                    label(for='p_product_name') Tên sản phẩm
                                                                     input#p_product_name.form-control(type='text' value =`${laptop.product_name}`)
                                                                 .form-group
-                                                                    label(for='p_new_price') Price
+                                                                    label(for='p_new_price') Giá
                                                                     input#p_new_price.form-control(type='text' value =`${laptop.new_price}`)
                                                                 .form-group
-                                                                    label(for='p_discount_percentage') Discount Percentage
+                                                                    label(for='p_discount_percentage') Phần trăm giảm giá
                                                                     input#p_discount_percentage.form-control(type='text' value=`${laptop.discount_percentage}`)
                                                                 .form-group
-                                                                    label(for='p_display') Display
+                                                                    label(for='p_display') Màn hình
                                                                     input#p_display.form-control(type='text' value=`${laptop.display}`)
                                                                 .form-group
                                                                     label(for='p_cpu') CPU
                                                                     input#p_cpu.form-control(type='text' value=`${laptop.cpu}`)
                                                                 .form-group
-                                                                    label(for='p_gpu_name') GPU
-                                                                    input#p_gpu_name.form-control(type='text' value=`${laptop.gpu_name}`)
-                                                                .form-group
-                                                                    label(for='p_ram') RAM
-                                                                    input#p_ram.form-control(type='text' value=`${laptop.ram}`)
-                                                                .form-group
-                                                                    label(for='p_manufacturer') Manufacturer
-                                                                    input#p_manufacturer.form-control(type='text' value=`${laptop.manufacturer}`)
-                                                                .form-group
-                                                                    label(for='p_stock_quantity') Stock Quantity
-                                                                    input#p_stock_quantity.form-control(type='text' value=`${laptop.stock_quantity}`)
-                                                                .form-group
-                                                                    label(for='p_material') Material
-                                                                    input#p_material.form-control(type='text' value=`${laptop.material}`)
-                                                                .form-group
-                                                                    label(for='p_ssd') SSD
-                                                                    input#p_ssd.form-control(type='text' value=`${laptop.ssd}`)
-                                                                .form-group
-                                                                    label(for='p_operating_system') OS
-                                                                    input#p_operating_system.form-control(type='text' value=`${laptop.operating_system}`)
-                                                                .form-group
-                                                                    label(for='p_cpu_type') CPU type
+                                                                    label(for='p_cpu_type') Loại CPU
                                                                     select#p_cpu_type.form-control
                                                                         each cpu in ['i3', 'i5', 'i7', 'r3', 'r5', 'r7']
                                                                             if laptop.cpu_type === cpu
@@ -216,7 +195,10 @@ block content
                                                                             else 
                                                                                 option(value=`${cpu}` ) #{cpu}     
                                                                 .form-group
-                                                                    label(for='p_gpu_onboard') CPU type
+                                                                    label(for='p_gpu_name') GPU
+                                                                    input#p_gpu_name.form-control(type='text' value=`${laptop.gpu_name}`)
+                                                                .form-group
+                                                                    label(for='p_gpu_onboard') Loại GPU
                                                                     select#p_gpu_onboard.form-control
                                                                         if laptop.gpu_onboard === 1
                                                                             option(value = '1' selected='selected') Onboard
@@ -225,7 +207,25 @@ block content
                                                                             option(value = '1') Onboard
                                                                             option(value = '0' selected='selected') Card rời
                                                                 .form-group
-                                                                    label(for='p_available') CPU type
+                                                                    label(for='p_ram') RAM
+                                                                    input#p_ram.form-control(type='text' value=`${laptop.ram}`)
+                                                                .form-group
+                                                                    label(for='p_manufacturer') Nhà sản xuất
+                                                                    input#p_manufacturer.form-control(type='text' value=`${laptop.manufacturer}`)
+                                                                .form-group
+                                                                    label(for='p_stock_quantity') Số lượng tồn kho
+                                                                    input#p_stock_quantity.form-control(type='text' value=`${laptop.stock_quantity}`)
+                                                                .form-group
+                                                                    label(for='p_material') Chất liệu
+                                                                    input#p_material.form-control(type='text' value=`${laptop.material}`)
+                                                                .form-group
+                                                                    label(for='p_ssd') SSD
+                                                                    input#p_ssd.form-control(type='text' value=`${laptop.ssd}`)
+                                                                .form-group
+                                                                    label(for='p_operating_system') Hệ điều hành
+                                                                    input#p_operating_system.form-control(type='text' value=`${laptop.operating_system}`)
+                                                                .form-group
+                                                                    label(for='p_available') Tình trạng hàng
                                                                     select#p_available.form-control
                                                                         if laptop.available === 1
                                                                             option(value = '1' selected='selected') Cho phép bán

@@ -8,6 +8,14 @@ function createUser({
     p_password,
     p_password_confirm,
 }) {
+    console.log({
+        p_email,
+        p_phone,
+        p_address,
+        p_name,
+        p_password,
+        p_password_confirm,
+    })
     return new Promise((resolve, reject) => {
         const sql = `CALL createUser(?,?,?,?,?,?)`;
  
@@ -17,7 +25,7 @@ function createUser({
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(results);
+                    resolve({newUser: results});
                 }
             }
         );

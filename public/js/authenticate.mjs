@@ -1,40 +1,36 @@
-const login = async (email, password) => {
+const login = async (data) => {
     try {
-        const res = await axios({
-            method: 'POST',
-            url: '/api/users/login',
-            data: {
-                email,
-                password,
-            },
-        });
+        console.log(data)
+        // const res = await axios({
+        //     method: 'POST',
+        //     url: '/api/users/login',
+        //     data
+        // });
         if (res.data.status === 'success') {
-            showAlert('success', 'Logged in successfully!');
+            showAlert('success', 'Đăng nhập thành công!');
             window.setTimeout(() => {
                 location.assign('/');
             }, 200);
         }
     } catch (err) {
-        showAlert('error', 'Wrong username or password');
+        showAlert('error', 'Sai email hoặc mật khẩu');
     }
 };
-const signup = async (name, email, password, passwordConfirm) => {
+const signup = async (data) => {
     try {
+        console.log(data)
         const res = await axios({
             method: 'POST',
             url: '/api/users/signup',
-            data: {
-                name,
-                email,
-                password,
-                passwordConfirm,
-            },
+            data
         });
         if (res.data.status === 'success') {
             showAlert('success', 'Create successfully!');
             window.setTimeout(() => {
-                location.assign('/');
+                location.assign('/login');
             }, 200);
+        } else {
+            showAlert('error', 'Thông tin đăng kí không hợp lệ');
         }
     } catch (err) {
         showAlert('error', 'Thông tin đăng kí không hợp lệ');
@@ -63,7 +59,7 @@ if (document.querySelector('.login-form')) {
         e.preventDefault();
         const email = document.querySelector('#email').value;
         const password = document.querySelector('#password').value;
-        login(email, password);
+        login({email, password});
     };
 }
 if (document.querySelector('.form-signup')) {
@@ -74,6 +70,10 @@ if (document.querySelector('.form-signup')) {
         const password = document.querySelector('#password').value;
         const passwordConfirm =
             document.querySelector('#passwordConfirm').value;
-        signup(name, email, password, passwordConfirm);
+            const phone =
+            document.querySelector('#phone').value;
+            const address =
+            document.querySelector('#address').value;
+        signup({email, phone, address, name,  password, passwordConfirm});
     };
 }
