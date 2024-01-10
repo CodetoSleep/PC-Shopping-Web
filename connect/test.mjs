@@ -49,7 +49,7 @@ const user = {
   p_password_confirm:'123456',
 }
 const test =  async () => {
-  const result = await userControllers.createUser(user);
+  const result = await userControllers.getOneUser('john.doe@example.com');
   console.log(result)
 }
 test();

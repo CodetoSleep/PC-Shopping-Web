@@ -140,11 +140,33 @@ function before_insert_user() {
     });
 }
 
+function getOneUser(p_email) {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT user_id, phone, name, address FROM User WHERE email = ?`;
+        connection.query(
+            sql, [p_email],
+            (error, results, fields) => {
+                if (error) {
+                    return reject(error);
+                }
+                if (results && results.length > 0) {
+                    const userData = results[0];
+                    return resolve(userData);
+                } else {
+                    return reject(new Error("User not found"));
+                }
+            }
+        );
+    });
+}
+
+
 export default {
     createUser,
     updateUser,
     updateUserPassword,
     getAllUser,
     createUpdateUserPasswordTrigger,
-    before_insert_user
+    before_insert_user,
+    getOneUser
 }
