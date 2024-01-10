@@ -1,12 +1,82 @@
 import connection from "../connect/config.mjs";
 
+function createProduct({
+  p_product_name,
+  p_new_price,
+  p_old_price = 0,
+  p_discount_percentage,
+  p_weight,
+  p_display,
+  p_cpu,
+  p_cpu_type,
+  p_gpu_name,
+  p_gpu_onboard,
+  p_ram,
+  p_ssd,
+  p_hdd = 256,
+  p_operating_system,
+  p_color,
+  p_battery,
+  p_camera,
+  p_rating_average,
+  p_rating_amount,
+  p_available,
+  p_sold = 0,
+  p_manufacturer,
+  p_manufacturer_year = 2022,
+  p_material,
+  p_stock_quantity
+}) {
+  return new Promise((resolve, reject) => {
+    const sql = `CALL createProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    connection.query(
+      sql,
+      [
+        p_product_name,
+        p_new_price,
+        p_old_price,
+        p_discount_percentage,
+        p_weight,
+        p_display,
+        p_cpu,
+        p_cpu_type,
+        p_gpu_name,
+        p_gpu_onboard,
+        p_ram,
+        p_ssd,
+        p_hdd,
+        p_operating_system,
+        p_color,
+        p_battery,
+        p_camera,
+        p_rating_average,
+        p_rating_amount,
+        p_available,
+        p_sold,
+        p_manufacturer,
+        p_manufacturer_year,
+        p_material,
+        p_stock_quantity
+      ],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve('success');
+        }
+      }
+    );
+  });
+}
+
+
 function getProduct(productId) {
   return new Promise((resolve, reject) => {
     const sql = `CALL getOneProduct(?)`;
 
     connection.query(sql, [productId], (err, result) => {
       if (err) {
-        console.error('Error:', err);
+        // console.error('Error:', err);
         reject({ message: 'error' });
       } else {
         const products = result[0][0];
@@ -26,7 +96,6 @@ function getAllProducts({page = null, minPrice = null, maxPrice = null, ram = nu
         reject(err);
         reject({message: "error"});
       } else {
-        console.log(result[0])
         resolve({products: result[0], message: "success"}); // Assuming the result is an array of products
       }
     });
@@ -34,32 +103,32 @@ function getAllProducts({page = null, minPrice = null, maxPrice = null, ram = nu
 }
 
 function updateProduct(
-  p_product_id,
+  {p_product_id,
   p_product_name,
   p_new_price,
-  p_old_price,
+  p_old_price = 0,
   p_discount_percentage,
-  p_weight,
-  p_display,
+  p_weight = 1.5,
+  p_display = '15.6 inch OLED FulHD+',
   p_cpu,
   p_cpu_type,
   p_gpu_name,
   p_gpu_onboard,
   p_ram,
   p_ssd,
-  p_hdd,
-  p_operating_system,
-  p_color,
-  p_battery,
-  p_camera,
-  p_rating_average,
-  p_rating_amount,
+  p_hdd = 256,
+  p_operating_system = 'Win 11',
+  p_color = 'red',
+  p_battery = 'blue',
+  p_camera = 'vip',
+  p_rating_average = 1,
+  p_rating_amount = 2,
   p_available,
-  p_sold,
+  p_sold = 100,
   p_manufacturer,
-  p_manufacturer_year,
-  p_material,
-  p_stock_quantity
+  p_manufacturer_year = 2021,
+  p_material = 'Metal',
+  p_stock_quantity}
 ) {
   return new Promise((resolve, reject) => {
     const sql = `CALL updateProduct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
@@ -69,7 +138,7 @@ function updateProduct(
         p_product_id, // Added p_product_id as the first parameter
         p_product_name,
         p_new_price,
-        p_old_price,
+        p_new_price,
         p_discount_percentage,
         p_weight,
         p_display,
@@ -97,7 +166,7 @@ function updateProduct(
         if (err) {
           reject(err);
         } else {
-          resolve(result);
+          resolve('success');
         }
       }
     );
@@ -158,7 +227,7 @@ function deleteProduct(p_product_id) {
                       reject(err);
                     });
                   }
-                  resolve('Product deleted successfully');
+                  resolve('success');
                 });
               });
             });
@@ -169,7 +238,10 @@ function deleteProduct(p_product_id) {
   });
 }
 
+
+getAllProducts({page: 1, ram: 8})
 export default { 
+  createProduct,
   getProduct,
   getAllProducts,
   updateProduct,
