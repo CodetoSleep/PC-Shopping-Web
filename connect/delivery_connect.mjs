@@ -1,8 +1,23 @@
 import connection from "./config.mjs";
 
-function getCart({
+function getDelivery(p_user_id){
+    return new Promise((resolve, reject) => {
+        const sql = `CALL getDelivery(?)`;
+        connection.query(
+            sql, [p_user_id],
+            (error, results, fields) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(results[0]);
+            }
+        );
+    });
+}
+
+function getCart(
     p_user_id
-}) {
+) {
     return new Promise((resolve, reject) => {
         const sql = `CALL getCart(?)`;
         connection.query(
@@ -17,12 +32,12 @@ function getCart({
     });
 }
 
-function addItemToCart({
+function addItemToCart(
     p_user_id,
     p_product_id
-}) {
+) {
     return new Promise((resolve, reject) => {
-        const sql = `CALL addItemToCart(?,?,?)`;
+        const sql = `CALL addItemToCart(?,?)`;
         connection.query(
             sql, [p_user_id, p_product_id],
             (error, results, fields) => {
@@ -65,9 +80,9 @@ function addUpdateCartTotalPriceTrigger() {
     });
   }
 
-function convertCartToDelivery({
+function convertCartToDelivery(
     p_user_id
-}) {
+) {
     return new Promise((resolve, reject) => {
         const sql = `CALL convertCartToDelivery(?)`;
         connection.query(

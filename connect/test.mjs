@@ -1,5 +1,5 @@
 import productControllers from "./product_connect.mjs"; // Replace with the correct path to your file
-import userControllers from "./user_connect.mjs"; // Replace with the correct path to your file
+import deliveryControllers from "./delivery_connect.mjs"; // Replace with the correct path to your file
 
 const req = {
   params: {
@@ -49,7 +49,7 @@ const user = {
   p_password_confirm:'123456',
 }
 const test =  async () => {
-  const result = await userControllers.getOneUser('john.doe@example.com');
+  const result = await deliveryControllers.addItemToCart(1,3);
   console.log(result)
 }
 test();
