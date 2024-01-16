@@ -1,6 +1,6 @@
 import productControllers from "./product_connect.mjs"; // Replace with the correct path to your file
 import deliveryControllers from "./delivery_connect.mjs"; // Replace with the correct path to your file
-
+import userControllers from "./user_connect.mjs"
 const req = {
   params: {
     id: 1, // Replace with the specific product ID you want to test
@@ -49,7 +49,7 @@ const user = {
   p_password_confirm:'123456',
 }
 const test =  async () => {
-  const result = await deliveryControllers.addItemToCart(1,3);
+  const result = await userControllers.after_insert_user();
   console.log(result)
 }
 test();
