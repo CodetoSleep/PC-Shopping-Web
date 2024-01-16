@@ -20,7 +20,8 @@ const getOverview = catchAsync(async (req, res) => {
 });
 const getProduct = catchAsync(async (req, res, next) => {
     const product = await productControllers.getProduct(parseInt(req.params.id));
-    console.log(product)
+    console.log('.....')
+    console.log(product.product)
     if (!product) next(new appError('There is no product with that name', 404));
     res.status(200).render('product', {
         title: product.product? product.product.product_name : "Không tìm thấy sản phẩm",
@@ -57,23 +58,31 @@ const changePassword = (req, res) => {
     });
 };
 const getMyCart = catchAsync(async (req, res) => {
-    let products;
+    let products = [];
     if (req.user) {
-        // const itemIds = req.user.items;
-        // const itemPromises = itemIds.map((id) => Product.findById(id));
-        // products = await Promise.all(itemPromises);
-        const listItems = await deliControllers.getCart({p_user_id: req.user.user_id});
-        const itemPromises = listItems.map((e) => {
-            return productControllers.getProduct(e.product_id)
-        });
-        products = await Promise.all(itemPromises);
+        const listItems = await deliControllers.getCart(req.user.user_id);
+        for(const item in listItems) {
+            const product = await productControllers.getProduct(listItems[item].product_id);
+            console.log(listItems[item])
+            products.push({ ...listItems[item], ...product });
+        }
+        products = products.filter(obj => obj.product != undefined)
     } else {
         products = null;
     }
     console.log(products);
+    let delivery;
+    if(req.user) {
+        delivery = await deliControllers.getDelivery(req.user.user_id);
+    } else {
+        delivery = null
+    }
+    // console.log(products);
+    console.log(delivery)
     res.status(200).render('cart', {
         title: 'My cart',
         products,
+        delivery
     });
 });
 export {

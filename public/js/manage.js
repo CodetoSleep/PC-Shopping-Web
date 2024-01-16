@@ -8,7 +8,7 @@ const getProductFromForm = (id = -1) => {
     }
     // console.log(`form#update-form${id}`);
     formValues['p_product_name'] = formElement.querySelector('input#p_product_name').value;
-    formValues['p_new_price'] = parseInt(formElement.querySelector('input#p_new_price').value);
+    formValues['p_old_price'] = parseInt(formElement.querySelector('input#p_new_price').value);
     formValues['p_discount_percentage'] = parseInt(formElement.querySelector('input#p_discount_percentage').value);
     formValues['p_display'] = formElement.querySelector('input#p_display').value;
     formValues['p_cpu'] = formElement.querySelector('input#p_cpu').value;

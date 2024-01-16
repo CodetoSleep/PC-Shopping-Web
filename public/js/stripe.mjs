@@ -14,12 +14,13 @@ const purchaseItems = async (total) => {
         const user = JSON.parse(purchaseBtn.dataset.user);
         if (user === null) {
             localStorage.setItem('cart', []);
-        } else {
-            await axios({
-                method: 'GET',
-                url: `/api/purchase/add-delivery/${user.id}`,
-            });
-        }
+        } 
+        // else {
+        //     await axios({
+        //         method: 'GET',
+        //         url: `/api/purchase/add-delivery`,
+        //     });
+        // }
     } catch (error) {
         showAlert('error', error);
     }

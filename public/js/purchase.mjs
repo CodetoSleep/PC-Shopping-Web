@@ -1,13 +1,13 @@
 const purchaseBtns = document.querySelectorAll('.purchase-btn');
 
-const purchaseUser = (product_id, p_user_id) => async () => {
+const purchaseUser = (p_product_id, p_user_id) => async () => {
     const res = (
         await axios({
             method: 'PATCH',
             url: '/api/users/purchase',
             data: {
                 p_user_id,
-                product_id
+                p_product_id
             },
         })
     ).data;
@@ -39,7 +39,7 @@ purchaseBtns.forEach((btn) => {
     const item = JSON.parse(btn.dataset.item);
     const user = btn.dataset.user;
     if (user !== 'null') {
-        btn.onclick = purchaseUser(item.id, user);
+        btn.onclick = purchaseUser(item.product_id, parseInt(user));
     } else {
         btn.onclick = purchaseLocal(item);
     }

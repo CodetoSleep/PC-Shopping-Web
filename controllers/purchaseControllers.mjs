@@ -3,28 +3,32 @@ import Stripe from 'stripe';
 import deliController from '../connect/delivery_connect.mjs'
 
 const purchaseItem = catchAsync(async (req, res, next) => {
-    
-    
-    // const user = await User.findById(userId).select('+items');
-    // if (!user.items.includes(itemId)) {
-    //     user.items.push(itemId);
-    //     await user.save({ validateBeforeSave: false });
-    // }
+    console.log(req.body);
     await deliController.addItemToCart(req.body)
     res.status(200).json({
         status: 'success',
     });
 });
 
-const addDeliveryFromCart = catchAsync(async (req,res, next) => {
-    const cart = req.params.cart;
-    await addDelivery(cart);
+const changeItemQtn = catchAsync(async (req, res, next) => {
+    await deliController.changeItemQuantity(req.body)
     res.status(200).json({
-        status: 'success'
-    })
+        status: 'success',
+    });
+});
+
+const addDeliveryFromCart = catchAsync(async (req,res, next) => {
+    try {
+        
+        await deliController.convertCartToDelivery(req.user.user_id);
+        res.redirect(`${req.protocol}://${req.get('host')}/mycart`);
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 const deletePurchase = catchAsync(async (req, res, next) => {
-    
+    await deliController.removeItemFromCart(req.body);
     res.status(200).json({
         status: 'success',
     });
@@ -37,7 +41,7 @@ const checkOutSession = catchAsync(async (req, res) => {
     //2. Create checkout session
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        success_url: `${req.protocol}://${req.get('host')}/mycart`,
+        success_url: `${req.protocol}://${req.get('host')}/api/purchase/add-delivery`,
         cancel_url: `${req.protocol}://${req.get('host')}/mycart`,
         line_items: [
             {
@@ -48,7 +52,7 @@ const checkOutSession = catchAsync(async (req, res) => {
                         name: `Thanh toán giỏ hàng`,
 
                         images: [
-                            `${req.protocol}://${req.get('host')}/purchase.jpg`,
+                            `https://search.brave.com/images?q=payment%20online`,
                         ],
                     },
                 },
@@ -64,4 +68,4 @@ const checkOutSession = catchAsync(async (req, res) => {
     });
 });
 
-export { checkOutSession, purchaseItem, deletePurchase, addDeliveryFromCart };
+export { checkOutSession, purchaseItem, deletePurchase, addDeliveryFromCart, changeItemQtn };

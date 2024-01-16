@@ -15,6 +15,8 @@ const calculateTotal = () => {
     });
 };
 const costChange = (sign, btn) => () => {
+    console.log(123134)
+
     const productCost = parseFloat(
         btn
             .closest('li')
@@ -36,33 +38,60 @@ const costChange = (sign, btn) => () => {
         cost.innerText = (productCost * qtn).toLocaleString('en-US');
         calculateTotal();
     }
+    console.log(qtn)
     qtnBtn.innerText = qtn;
 };
-increaseBtns.forEach((btn) => {
-    btn.onclick = costChange(true, btn);
+increaseBtns.forEach( (btn) => {
+    const p_product_id = btn.dataset.item;
+    const p_user_id = btn.dataset.user;
+    btn.onclick = async () => {
+        costChange(true, btn)();
+        await axios({
+            method: 'PATCH',
+            url: '/api/purchase/change-item-qtn',
+            data: {
+                p_product_id,
+                p_user_id,
+                dif: 1
+            },
+        });
+    }
 });
 
-decreaseBtns.forEach((btn) => {
-    btn.onclick = costChange(false, btn);
+decreaseBtns.forEach( (btn) => {
+    const p_product_id = btn.dataset.item;
+    const p_user_id = btn.dataset.user;
+    btn.onclick = async () => {
+        costChange(false, btn)();
+        await axios({
+            method: 'PATCH',
+            url: '/api/purchase/change-item-qtn',
+            data: {
+                p_product_id,
+                p_user_id,
+                dif: -1
+            },
+        });
+    }
 });
 
 deleteBtns.forEach((btn) => {
-    const itemId = btn.dataset.item;
-    const userId = btn.dataset.user;
+    const p_product_id = btn.dataset.item;
+    const p_user_id = btn.dataset.user;
     btn.onclick = async () => {
         btn.closest('li').style.display = 'none';
-        if (userId !== 'null') {
+        if (p_user_id !== 'null') {
             await axios({
                 method: 'PATCH',
                 url: '/api/users/deletePurchase',
                 data: {
-                    itemId,
-                    userId,
+                    p_product_id,
+                    p_user_id,
                 },
             });
         } else {
             let items = JSON.parse(localStorage.getItem('cart'));
-            items = items.filter((item) => item._id !== itemId);
+            items = items.filter((item) => item.product_id !== p_product_id);
             localStorage.setItem('cart', JSON.stringify(items));
         }
         calculateTotal();

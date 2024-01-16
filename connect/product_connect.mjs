@@ -5,7 +5,7 @@ function createProduct({
   p_old_price,
   p_new_price = 0,
   p_discount_percentage,
-  p_weight,
+  p_weight = 1.8,
   p_display,
   p_cpu,
   p_cpu_type,
@@ -15,11 +15,11 @@ function createProduct({
   p_ssd,
   p_hdd = 256,
   p_operating_system,
-  p_color,
-  p_battery,
-  p_camera,
-  p_rating_average,
-  p_rating_amount,
+  p_color ='red',
+  p_battery = '71wh',
+  p_camera = 'vip',
+  p_rating_average = 0,
+  p_rating_amount = 0,
   p_available,
   p_sold = 0,
   p_manufacturer,
@@ -61,6 +61,7 @@ function createProduct({
       (err, result) => {
         if (err) {
           reject(err);
+          console.log(err)
         } else {
           resolve('success');
         }
@@ -88,10 +89,11 @@ function getProduct(productId) {
 }
 
 
-function getAllProducts({page = null, minPrice = null, maxPrice = null, ram = null, nsx = null, sortPrice =1, sortRating=1, sortSold=1, available=1}) {
+function getAllProducts({page = 1, minPrice = 0, maxPrice = 99999999, ram = null, nsx = null, sortPrice =1, sortRating=1, sortSold=1, available=1}) {
+  console.log({page , minPrice , maxPrice , ram , nsx , sortPrice , sortRating, sortSold, available});
   return new Promise((resolve, reject) => {
     const sql = 'CALL getAllProducts(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [page, minPrice, maxPrice, ram, nsx, sortPrice, sortRating, sortSold, available], (err, result) => {
+    connection.query(sql, [parseFloat(page), parseFloat(minPrice), parseFloat(maxPrice), ram, nsx, sortPrice, sortRating, sortSold, available], (err, result) => {
       if (err) {
         reject(err);
         reject({message: "error"});

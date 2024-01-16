@@ -5,30 +5,49 @@ block content
     .bg-light
         .container.bg-white.p-5
             h3 Giỏ hàng của bạn 
-            p.pb-3.border-bottom.border-secondary
-                span.text-danger.font-weight-bold Liên hệ nhân viên trước khi chuyển tiền mua hàng.
-                br
-                span.text-danger.font-weight-bold Để đặt hàng, 
-                span quý khách vui lòng kiểm tra sản phẩm, số lượng, giá, màu sắc và điền các thông tin dưới đây:
-            ul.my-cart.list-unstyled(data-products = `${JSON.stringify(products) }` data-user = `${JSON.stringify(user || null)}`)
-                
-            p.text-right
-                span Phí vận chuyển: 0đ
-                br 
-                span Phí Thu Hộ: 0đ
-                br 
-                span.text-danger.font-weight-bold Tổng cộng: 
-                span.totalCost 
-                span d
-                br 
-                span.text-danger.font-weight-bold Thanh Toán:  
-                span.totalCost 
-                span d
-                br
-                button.mt-3.btn.btn-primary.btn-lg.buy-btn.purchase-btn(type='button' data-user = `${JSON.stringify(user === null? null : user)}`) ĐẶT HÀNG
-
-            h3 Đơn hàng của bạn 
-            ul.my-delivery.list-unstyled           
+            if !user
+                p.pb-3.border-bottom.border-secondary
+                    span.text-danger.font-weight-bold Liên hệ nhân viên trước khi chuyển tiền mua hàng.
+                    br
+                    span.text-danger.font-weight-bold Để đặt hàng, 
+                    span quý khách vui lòng kiểm tra sản phẩm, số lượng, giá, màu sắc và điền các thông tin dưới đây:
+                ul.my-cart.list-unstyled(data-products = `${JSON.stringify(products) }` data-user = `${JSON.stringify(user || null)}`)
+                p.text-right
+                   
+                    a(href = '/login'): button.mt-3.btn.btn-primary.btn-lg.buy-btn.purchase-btn Đăng nhập để đặt hàng
+            else
+                if products != null && products.filter(obj => Object.keys(obj).length !== 0).length > 0
+                    p.pb-3.border-bottom.border-secondary
+                        span.text-danger.font-weight-bold Liên hệ nhân viên trước khi chuyển tiền mua hàng.
+                        br
+                        span.text-danger.font-weight-bold Để đặt hàng, 
+                        span quý khách vui lòng kiểm tra sản phẩm, số lượng, giá, màu sắc và điền các thông tin dưới đây:
+                    ul.my-cart.list-unstyled(data-products = `${JSON.stringify(products) }` data-user = `${JSON.stringify(user || null)}`)
+                        
+                    p.text-right
+                        span Phí vận chuyển: 0đ
+                        br 
+                        span Phí Thu Hộ: 0đ
+                        br 
+                        span.text-danger.font-weight-bold Tổng cộng: 
+                        span.totalCost 
+                        span đ
+                        br 
+                        span.text-danger.font-weight-bold Thanh Toán:  
+                        span.totalCost 
+                        span đ
+                        br
+                        button.mt-3.btn.btn-primary.btn-lg.buy-btn.purchase-btn(type='button' data-user = `${JSON.stringify(user === null? null : user)}`) ĐẶT HÀNG
+                        
+                else 
+                    div(style="text-align: center; height: 200px; padding-top: 100px;"): h5 Không có đơn hàng nào 
+            
+            if user 
+                h3 Đơn hàng của bạn 
+                if delivery != null && delivery.length > 0
+                    ul.my-delivery.list-unstyled(data-delivery = `${JSON.stringify(delivery)}`)       
+                else 
+                    div(style="text-align: center; height: 200px; padding-top: 100px;"): h5 Không có đơn hàng nào 
 
 block append script 
     script(src="js/cartRender.mjs") 

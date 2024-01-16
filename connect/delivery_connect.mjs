@@ -19,13 +19,13 @@ function getCart(
 }
 
 function addItemToCart(
-    p_user_id,
-    p_product_id
+   { p_user_id,
+    p_product_id}
 ) {
     return new Promise((resolve, reject) => {
         const sql = `CALL addItemToCart(?,?)`;
         connection.query(
-            sql, [p_user_id, p_product_id],
+            sql, [p_product_id, p_user_id],
             (error, results, fields) => {
                 if (error) {
                     return reject(error);
@@ -38,14 +38,14 @@ function addItemToCart(
 
 function getDelivery(p_user_id){
     return new Promise((resolve, reject) => {
-        const sql = `CALL getDelivery(?)`;
+        const sql = `Select * from Delivery where user_id = ${p_user_id}`;
         connection.query(
             sql, [p_user_id],
             (error, results, fields) => {
                 if (error) {
                     return reject(error);
                 }
-                return resolve(results[0]);
+                return resolve(results);
             }
         );
     });
@@ -128,11 +128,27 @@ function afterRemoveItemFromCart(){
     });
 }
 
-function removeItemFromCart (p_product_id, p_user_id) {
+function removeItemFromCart ({p_product_id, p_user_id}) {
     return new Promise((resolve, reject) => {
         const sql = `CALL removeItemFromCart(?,?)`;
         connection.query(
             sql, [p_product_id, p_user_id],
+            (error, results, fields) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve('success');
+            }
+        );
+    });
+}
+
+function changeItemQuantity ({p_product_id, p_user_id, dif}) {
+    console.log({p_product_id, p_user_id, dif})
+    return new Promise((resolve, reject) => {
+        const sql = `CALL changeItemQuantity(?,?,?)`;
+        connection.query(
+            sql, [p_product_id, p_user_id,dif],
             (error, results, fields) => {
                 if (error) {
                     return reject(error);
@@ -149,6 +165,8 @@ export default {
     addItemToCart,
     addUpdateCartTotalPriceTrigger,
     convertCartToDelivery,
-    getDelivery
+    getDelivery,
+    removeItemFromCart,
+    changeItemQuantity
 };
 

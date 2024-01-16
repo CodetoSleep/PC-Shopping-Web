@@ -25,7 +25,7 @@ const login = catchAsync(async (req, res, next) => {
 //   const user = await User.findOne({ email }).select("+password");
 //   const check = await correctPassword(password, user.password);
   const user = await userController.getOneUser(email);
-  const check = user.password === password
+  const check = await correctPassword(password,user.password)
   console.log(user);
   if (!user || !check)
     return next(new appError("Can not find user with that email", 404));
@@ -34,14 +34,14 @@ const login = catchAsync(async (req, res, next) => {
 const signup = catchAsync(async (req, res, next) => {
   const { name, password, email, passwordConfirm, address, phone } = req.body;
   const p_password = await hashPassword(password);
-  const p_password_confirm = await hashPassword(passwordConfirm)
+
   const {newUser} = await userController.createUser(
     {p_email: email,
     p_phone: phone,
     p_address: address, 
     p_name: name,
-    p_password: password,
-    p_password_confirm: passwordConfirm,}
+    p_password,
+    p_password_confirm: p_password}
   );
     sendToken(newUser, req, res);
 

@@ -15,12 +15,9 @@ block content
                                 li(data-target='#carouselExampleIndicators' data-slide-to='1')
                                 li(data-target='#carouselExampleIndicators' data-slide-to='2')
                             .carousel-inner
-                                .carousel-item.active
-                                    img.d-block.w-100(src=`/laptop/laptop${product.product_id}1.jpg` alt='...')
-                                .carousel-item
-                                    img.d-block.w-100(src=`/laptop/laptop${product.product_id}2.jpg` alt='...')
-                                .carousel-item
-                                    img.d-block.w-100(src=`/laptop/laptop${product.product_id}3.jpg` alt='...')
+                                each image in product.image_names.split(',')
+                                    .carousel-item.active
+                                        img.d-block.w-100(src=`/laptop/${image}` alt='...')
                             button.carousel-control-prev(type='button' data-target='#carouselExampleIndicators' data-slide='prev')
                                 span.bg-secondary.carousel-control-prev-icon(aria-hidden='true')
                                 span.sr-only Previous
@@ -194,7 +191,7 @@ block content
                                 span.small ✦ Giảm giá màn hình lên tới 1.000.000đ khi mua cùng màn hình.
                                 br 
                                 span.small ✦ Ưu đãi giảm giá 50% khi mua túi chống sốc HP 14-15,6" cao cấp.
-                        button.btn.btn-danger.btn-lg.btn-block.text-white.purchase-btn(type='button' data-item=`${product}` data-user = `${user === null?null:user._id}`)
+                        button.btn.btn-danger.btn-lg.btn-block.text-white.purchase-btn(type='button' data-item=`${JSON.stringify(product)}` data-user = `${user === null?null:user.user_id}`)
                             span.h5 ĐẶT MUA NGAY
                             br
                             span.small Nhanh chóng, thuận tiện
