@@ -43,7 +43,14 @@ function updateUser({
     p_name
 }) {
     return new Promise((resolve, reject) => {
-        const sql = `CALL updateUser(?,?,?,?,?,?,?)`;
+        console.log({
+            p_user_id,
+            p_email,
+            p_phone,
+            p_address,
+            p_name
+        })
+        const sql = `CALL updateUser(?,?,?,?,?)`;
         connection.query(
             sql, [p_user_id,
                 p_email,
@@ -66,6 +73,11 @@ function updateUserPassword({
     p_password_confirm
 }) {
     return new Promise((resolve, reject) => {
+        console.log({
+            p_user_id,
+            p_password,
+            p_password_confirm
+        })
         const sql = `CALL updateUserPassword(?,?,?)`;
         connection.query(
             sql, [p_user_id,
@@ -142,18 +154,18 @@ function before_insert_user() {
 
 function getOneUser(p_email) {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT user_id, phone, name, address FROM User WHERE email = ?`;
+        const sql = `SELECT * FROM User WHERE email = ?`;
         connection.query(
             sql, [p_email],
             (error, results, fields) => {
                 if (error) {
-                    return reject(error);
+                    return reject('error');
                 }
                 if (results && results.length > 0) {
                     const userData = results[0];
                     return resolve(userData);
                 } else {
-                    return reject(new Error("User not found"));
+                    return reject('error');
                 }
             }
         );

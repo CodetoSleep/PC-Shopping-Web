@@ -1,11 +1,11 @@
 const login = async (data) => {
     try {
         console.log(data)
-        // const res = await axios({
-        //     method: 'POST',
-        //     url: '/api/users/login',
-        //     data
-        // });
+        const res = await axios({
+            method: 'POST',
+            url: '/api/users/login',
+            data
+        });
         if (res.data.status === 'success') {
             showAlert('success', 'Đăng nhập thành công!');
             window.setTimeout(() => {

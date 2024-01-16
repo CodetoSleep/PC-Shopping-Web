@@ -22,9 +22,12 @@ const sendToken = (user, req, res) => {
 };
 const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email }).select("+password");
-  const check = await correctPassword(password, user.password);
-  if (!check || !user)
+//   const user = await User.findOne({ email }).select("+password");
+//   const check = await correctPassword(password, user.password);
+  const user = await userController.getOneUser(email);
+  const check = user.password === password
+  console.log(user);
+  if (!user || !check)
     return next(new appError("Can not find user with that email", 404));
   sendToken(user, req, res);
 });
@@ -63,25 +66,29 @@ const protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
   if (!token) return next(new appError("you are not allowed to access", 404));
-  const payload = await promisify(jwt.verify)(token, process.env.PRIVATE_KEY);
-  const user = await User.findById(payload.id);
+  const payload = await promisify(jwt.verify)(token, 'khoa.dp210486@sis.hust.edu.vn');
+  const user = await userController.getOneUser(payload.email);
   if (!user) {
     return next(
       new appError("The user belonging to this token does no longer exist"),
       401
     );
   }
-  const decoded = await promisify(jwt.verify)(token, process.env.PRIVATE_KEY);
-  if (user.changedPassAfter(decoded.iat)) {
-    return next(
-      new appError(
-        "User's password has recently changed. Please log in again to get access"
-      ),
-      401
-    );
-  }
+//   const decoded = await promisify(jwt.verify)(token, 'khoa.dp210486@sis.hust.edu.vn');
+//   if (user.changedPassAfter(decoded.iat)) {
+//     return next(
+//       new appError(
+//         "User's password has recently changed. Please log in again to get access"
+//       ),
+//       401
+//     );
+//   }
   req.user = user;
   res.locals.user = user;
+  console.log('----')
+  console.log(user)
+  console.log('----')
+
   next();
 });
 const forgotPassword = catchAsync(async (req, res, next) => {
@@ -137,23 +144,24 @@ const resetPassword = catchAsync(async (req, res, next) => {
 const updatePassword = catchAsync(async (req, res, next) => {
   //1. Get user from collection
   //const user = await User.findById(req.user._id).select('+password');
-  const user = await getOneUser(req.user.id);
+  const user = await userController.getOneUser(req.user.email);
   //2. Check if POSTED password is correct
-  const correct = await correctPassword(
-    req.body.passwordCurrent,
-    user.password
-  );
-  if (!correct) {
-    return next(new appError("Your current password is wrong", 401));
-  }
+  // const correct = await correctPassword(
+  //   req.body.passwordCurrent,
+  //   user.password
+  // );
+  // const correct = user.password === req.body.password;
+  // if (!correct) {
+  //   return next(new appError("Maatj", 401));
+  // }
   //3. If correct, update password
   // user.password = req.body.password;
   // user.passwordConfirm = req.body.passwordConfirm;
   // await user.save();
-  await updateUserPassword(
-    user.id,
-    req.body.password,
-    req.body.passwordConfirm
+  await userController.updateUserPassword(
+  {  p_user_id: user.user_id,
+    p_password: req.body.password,
+    p_password_confirm: req.body.passwordConfirm}
   );
   //4. Log user in, send JWT
   sendToken(user, req, res);
@@ -164,20 +172,20 @@ const isLoggedIn = async (req, res, next) => {
       //2. Verify token
       const decoded = await promisify(jwt.verify)(
         req.cookies.jwt,
-        process.env.PRIVATE_KEY
+        'khoa.dp210486@sis.hust.edu.vn'
       );
 
       //3. Check if user still exist
-      const freshUser = await User.findById(decoded.id);
+      const freshUser = await userController.getOneUser(decoded.email);
       if (!freshUser) {
         res.locals.user = null;
         return next();
       }
       //4. Check if users changed password after token was created
-      if (freshUser.changedPassAfter(decoded.iat)) {
-        res.locals.user = null;
-        return next();
-      }
+    //   if (freshUser.changedPassAfter(decoded.iat)) {
+    //     res.locals.user = null;
+    //     return next();
+    //   }
       //5. User is logged
       res.locals.user = freshUser;
       req.user = freshUser;
@@ -216,6 +224,16 @@ const createResetPassToken = function () {
 const hashPassword = async (password) => {
   return await bcrypt.hash(password, 12);
 };
+
+const updateUser = catchAsync(async (req, res, next) => {
+  console.log('controller')
+  const user = await userController.getOneUser(req.user.email);
+
+  await userController.updateUser({p_user_id: user.user_id, p_email: user.email, ...req.body});
+  res.status(201).json({
+    status: 'success'
+  })
+})
 export {
   login,
   logout,
@@ -225,4 +243,6 @@ export {
   protect,
   updatePassword,
   isLoggedIn,
+  updateUser,
+  adminOnly
 };

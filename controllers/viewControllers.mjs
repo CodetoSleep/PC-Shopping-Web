@@ -1,6 +1,8 @@
 import catchAsync from '../ultils/catchAsync.mjs';
 import appError from '../ultils/appError.mjs';
- import productControllers from '../connect/product_connect.mjs';
+import productControllers from '../connect/product_connect.mjs';
+import deliControllers from '../connect/delivery_connect.mjs';
+
 const getOverview = catchAsync(async (req, res) => {
     const page = req.query.page || 1;
     const {products: laptops, message} = await productControllers.getAllProducts(req.query);
@@ -50,19 +52,25 @@ const getSignupForm = (req, res) => {
     });
 };
 const changePassword = (req, res) => {
-    res.status(200).render('changePassword', {
-        title: 'My acount',
+    res.status(200).render('myProfile', {
+        title: 'My profile',
     });
 };
 const getMyCart = catchAsync(async (req, res) => {
     let products;
     if (req.user) {
-        const itemIds = req.user.items;
-        const itemPromises = itemIds.map((id) => Product.findById(id));
+        // const itemIds = req.user.items;
+        // const itemPromises = itemIds.map((id) => Product.findById(id));
+        // products = await Promise.all(itemPromises);
+        const listItems = await deliControllers.getCart({p_user_id: req.user.user_id});
+        const itemPromises = listItems.map((e) => {
+            return productControllers.getProduct(e.product_id)
+        });
         products = await Promise.all(itemPromises);
     } else {
         products = null;
     }
+    console.log(products);
     res.status(200).render('cart', {
         title: 'My cart',
         products,

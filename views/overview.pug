@@ -99,7 +99,7 @@ block content
                                             .d-flex.justify-content-between
                                                 a.text-primary So sánh
         
-                                                button.btn.btn-white.purchase-btn(data-user = `${user === null ? null :user._id}` data-item = `${laptop.id}`): i.text-primary.h5(class="fa-solid fa-cart-shopping")
+                                                button.btn.btn-white.purchase-btn(data-user = `${user === null ? null :user._id}` data-item = `${JSON.stringify(laptop)}`): i.text-primary.h5(class="fa-solid fa-cart-shopping")
                 .d-flex.justify-content-center.bg-white.py-3
                     if pageCurrent > 1 || laptops.length == 0
                         button.btn.btn-light.paginationBtn(data-page=`${pageCurrent-1}`) Trước  

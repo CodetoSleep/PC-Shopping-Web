@@ -1,0 +1,55 @@
+extend base
+
+block content 
+    .container
+        .row.p-4
+            .col-12.text-center 
+                h5 Thông tin cá nhân
+            .col-lg-2
+            .col-lg-8.p-3 
+                form(class="needs-validation form-signup update-info" novalidate)
+                    .form-group
+                        label(for='name') Tên người dùng
+                        input#name.form-control(type='text' required value=`${user.name}`)
+                        .invalid-feedback
+                            Please Chưa có tên
+                    .form-group
+                        label(for='phone') Số điện thoại
+                        input#phone.form-control(type='phone' required value=`${user.phone}`)
+                        .invalid-feedback
+                            Please Số điện thoại chưa hợp lệ
+                    .form-group
+                        label(for='address') Địa chỉ
+                        input#address.form-control(type='text' required value=`${user.address}`)
+                        .invalid-feedback
+                            Please Địa chỉ chưa hợp lệ
+                    button.mr-3.btn.btn-primary.btn-change-info(type='submit') Xác nhận
+        .row.p-4
+            .col-12.text-center 
+                h5 Thay đổi mật khẩu
+            .col-lg-2
+            .col-lg-8.p-3 
+                form(class="needs-validation form-signup update-pass" novalidate data-pass=`${user.password}`
+                data-id = `${user.id}`)
+                    .form-group
+                        label(for='curentPassword') Mật khẩu hiện tại
+                        input#curentPassword.form-control(type='password' required)
+                        .invalid-feedback
+                            Please Mật khẩu hiện tại chưa chính xác
+                    .form-group
+                        label(for='newPassword') Mật khẩu
+                        input#newPassword.form-control(type='password' required)
+                        .invalid-feedback
+                            Please Mật khẩu mới chưa hợp lệ
+                    .form-group
+                        label(for='newPasswordConfirm') Nhập lại mật khẩu 
+                        input#newPasswordConfirm.form-control(type='password' required)
+                        .invalid-feedback
+                            Please Mật khẩu xác nhận không chính xác
+                    button.mr-3.btn.btn-primary.btn-change-pass(type='submit') Xác nhận
+            .col-lg-2 
+
+block append script 
+    script(src="/js/validateForm.mjs")
+    script(src="/js/updateSetting.mjs") 
+

@@ -8,6 +8,7 @@ import {
     resetPassword,
     signup,
     updatePassword,
+    updateUser
 } from '../controllers/authiencationControllers.mjs';
 import {
     deletePurchase,
@@ -17,7 +18,6 @@ import {
     getAllUsers,
     getMe,
     getOneUser,
-    updateUser,
 } from '../controllers/userControllers.mjs';
 
 const Router = express.Router();
@@ -31,7 +31,7 @@ Router.route('/deletePurchase').patch(isLoggedIn, deletePurchase);
 
 Router.use(protect);
 Router.route('/updatePassword').patch(updatePassword);
-Router.route('/updateMe').patch(getMe, updateUser);
+Router.route('/updateMe').patch(updateUser);
 Router.route('/me').get(getMe, getOneUser);
 
 Router.route('/').get(getAllUsers);

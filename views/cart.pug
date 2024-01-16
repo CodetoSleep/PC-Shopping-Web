@@ -10,7 +10,7 @@ block content
                 br
                 span.text-danger.font-weight-bold Để đặt hàng, 
                 span quý khách vui lòng kiểm tra sản phẩm, số lượng, giá, màu sắc và điền các thông tin dưới đây:
-            ul.list-unstyled(data-products = `${JSON.stringify(products) }` data-user = `${JSON.stringify(user || null)}`)
+            ul.my-cart.list-unstyled(data-products = `${JSON.stringify(products) }` data-user = `${JSON.stringify(user || null)}`)
                 
             p.text-right
                 span Phí vận chuyển: 0đ
@@ -26,7 +26,9 @@ block content
                 span d
                 br
                 button.mt-3.btn.btn-primary.btn-lg.buy-btn.purchase-btn(type='button' data-user = `${JSON.stringify(user === null? null : user)}`) ĐẶT HÀNG
-                            
+
+            h3 Đơn hàng của bạn 
+            ul.my-delivery.list-unstyled           
 
 block append script 
     script(src="js/cartRender.mjs") 

@@ -61,8 +61,11 @@
                                         .dropdown-toggle(type='button' data-toggle='dropdown' aria-expanded='false')= user.name
                                             
                                         .dropdown-menu
-                                            a.dropdown-item(href='/changePassword') Thay đổi mật khẩu
-                                            a.dropdown-item(href='/mycart') Giỏ hàng
+                                            if user.role === 'admin'
+                                                a.dropdown-item(href='/manage') Quản lý sản phẩm
+                                            else
+                                                a.dropdown-item(href='/mycart') Giỏ hàng
+                                                a.dropdown-item(href='/my-profile') Thông tin tài khoản
                                             .dropdown-divider
                                             a.dropdown-item.logout-btn(href='#') Đăng xuất
                             else 
@@ -75,7 +78,8 @@
                     .col-12.col-xl-2.col-sm-3.col-lg-3
                         .row.align-items-center
                             .col-xl-4.col-sm-8
-                                a(href = "/mycart" style = "text-decoration: none").text-white: i(class="fa-solid fa-cart-shopping" style="font-size: 30px")         
+                                if !user || (user && user.role !== 'user')
+                                    a(href = "/mycart" style = "text-decoration: none").text-white: i(class="fa-solid fa-cart-shopping" style="font-size: 30px")         
     
 
 

@@ -1,23 +1,24 @@
-const list = document.querySelector('ul');
+const list = document.querySelector('ul.my-cart');
 const totalCost = document.querySelectorAll('.totalCost');
 let products;
 products = JSON.parse(list.dataset.products);
+console.log(products);
 user = JSON.parse(list.dataset.user);
-const render = () => {
+const render = (products) => {
     let html = products.reduce((accumulate, product) => {
         return (
             accumulate +
             `<li class="row border-bottom border-secondary pb-4">
                 <div class="col-12 col-md-3 col-lg-3 d-flex justify-content-center mb-3">
                     <img src="/laptop/${
-                        product.image[0]
+                        product.image_name
                     }" style="max-width: 150px; max-height: 150px">
                 </div>
                 <div class="col-12 col-md-9 col-lg-6">
                     <p class="h5 font-weight-bold mt-0 mb-1">
-                        ${product.name_model} (${product.cpu} | ${
+                        ${product.product_name} (${product.cpu} | ${
                 product.ram
-            } | ${product.ssd} | ${product.display.size} | ${
+            } | ${product.ssd} | ${product.display} | ${
                 product.operating_system
             } | ${product.color}) 
                     </p>
@@ -46,7 +47,7 @@ const render = () => {
                 </div>
                 <div class="col-12 col-lg-3 text-right">
                     <span class="line-through text-secondary">
-                        ${product.price.toLocaleString('en-US')}
+                        ${product.old_price.toLocaleString('en-US')}
                     </span>
                     <span>đ</span>
                     <br>
@@ -67,8 +68,8 @@ const render = () => {
                         </div>
                     </div>
                     <button class="deleteBtn btn btn-danger btn-sm mt-3" type="button" data-user = "${
-                        user === null ? null : user._id
-                    }" data-item = "${product._id}">Xóa</button>
+                        user === null ? null : user.user_id
+                    }" data-item = "${product.product_id}">Xóa</button>
                 </div>
             </li>`
         );
@@ -80,7 +81,56 @@ const render = () => {
     });
 };
 if (products === null) {
-    products = JSON.parse(localStorage.getItem('cart')) || [];
+    products = JSON.parse(localStorage.getItem('cart') || '[]');
 }
+console.log(',,,,,')
 products = products.filter((el) => el !== null);
-render();
+console.log(products)
+render(products);
+
+const delivery =  [{
+	delivery_id:  1,
+	total_price: 11230000,
+	created_day: '123-123-3434',
+	expected_day_arrive: '123-123-3434',
+	user_id: 1,
+	status: 'pending'
+},
+{
+	delivery_id:  1,
+	total_price: 234234234,
+	created_day: '123-123-3434',
+	expected_day_arrive: '123-123-3434',
+	user_id: 1,
+	status: 'xong'
+},
+{
+	delivery_id:  1,
+	total_price: 567567567,
+	created_day: '123-123-3434',
+	expected_day_arrive: '123-123-3434',
+	user_id: 1,
+	status: 'huy'
+},
+]
+
+
+const deliveryList = document.querySelector('ul.my-delivery');
+
+const renderDelivery = () => {
+    deliveryList.innerHTML = delivery.reduce((acc, deli, index) => {
+        return acc +  `
+            <div class="card" style='margin-top: 20px'>
+                <h5 class="card-header"></h5>
+                <div class="card-body">
+                <h5 class="card-title">Tổng tiền: ${deli.total_price.toLocaleString('en-US')}</h5>
+                <p class="card-text">Ngày đặt hàng: ${deli.created_day}</p>
+                <p class="card-text">Ngày giao đến dự kiến: ${deli.expected_day_arrive}</p>
+                <p class="card-text">Tình trạng đơn hàng: ${deli.status}</p>
+                </div>
+            </div>
+            `
+    }, '')
+}
+
+renderDelivery()
