@@ -152,6 +152,25 @@ function before_insert_user() {
     });
 }
 
+function after_insert_user(){
+    return new Promise((resolve, reject) => {
+        const triggerQuery = `
+        CREATE TRIGGER after_insert_user 
+        AFTER INSERT ON User 
+        FOR EACH ROW 
+        BEGIN 
+            INSERT INTO Cart(user_id) VALUES(NEW.user_id);
+        END;
+      `;
+        connection.query(triggerQuery, (error, results, fields) => {
+            if (error) {
+                return reject(error);
+            }
+            return resolve(results);
+        });
+    });
+}
+
 function getOneUser(p_email) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM User WHERE email = ?`;
@@ -180,5 +199,7 @@ export default {
     getAllUser,
     createUpdateUserPasswordTrigger,
     before_insert_user,
-    getOneUser
+    getOneUser,
+    after_insert_user,
+    before_insert_user
 }
