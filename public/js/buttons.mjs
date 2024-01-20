@@ -76,7 +76,7 @@ decreaseBtns.forEach( (btn) => {
 });
 
 deleteBtns.forEach((btn) => {
-    const p_product_id = btn.dataset.item;
+    const p_product_id = parseInt(btn.dataset.item);
     const p_user_id = btn.dataset.user;
     btn.onclick = async () => {
         btn.closest('li').style.display = 'none';
@@ -90,6 +90,7 @@ deleteBtns.forEach((btn) => {
                 },
             });
         } else {
+            console.log('delete');
             let items = JSON.parse(localStorage.getItem('cart'));
             items = items.filter((item) => item.product_id !== p_product_id);
             localStorage.setItem('cart', JSON.stringify(items));

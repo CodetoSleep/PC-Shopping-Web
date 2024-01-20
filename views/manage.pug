@@ -149,16 +149,16 @@ block content
                             each laptop in laptops 
                                 .product-card.col-xl-3.col-md-4.col-sm-6.col-12
                                     .card.my-2
-                                        a.border-bottom.border-secondary(href=`/${laptop.product_id}`): img.card-img-top(src=`/laptop/${laptop.image_name}` alt="laptop")
+                                        a.border-bottom.border-secondary(href=`/${laptop.product_id}`): img.card-img-top(src=`/laptop/${laptop.image_name != null? laptop.image_name : 'default.jpg'}` alt="laptop")
                                         .card-body.text-truncate
                                             span.small= laptop.product_name
                                             span.small (#{laptop.cpu} | #{laptop.ram}GB | #{laptop.ssd}GB)
                                             br
                                             br
-                                            span.font-weight-bold.card-text.line-through.text-secondary #{(laptop.old_price).toLocaleString('en-US')} đ
+                                            span.font-weight-bold.card-text.line-through.text-secondary #{parseFloat(laptop.old_price).toLocaleString('en-US')} đ
                                             span.font-weight-bold.py-2.px-2.badge.badge-warning.rounded-circle.ml-3.text-white -#{laptop.discount_percentage}%
                                             br
-                                            span.h5.font-weight-bolder.card-text.text-danger #{(laptop.new_price).toLocaleString('en-US')} đ
+                                            span.h5.font-weight-bolder.card-text.text-danger #{parseFloat(laptop.new_price).toLocaleString('en-US')} đ
                                             br
                                             br
                                             button.btn.btn-primary(type='button' data-toggle='modal' data-target=`#exampleModal${laptop.product_id}`) Cập nhật
@@ -176,7 +176,7 @@ block content
                                                                     input#p_product_name.form-control(type='text' value =`${laptop.product_name}`)
                                                                 .form-group
                                                                     label(for='p_new_price') Giá
-                                                                    input#p_new_price.form-control(type='text' value =`${laptop.new_price}`)
+                                                                    input#p_new_price.form-control(type='text' value =`${parseFloat(laptop.new_price)}`)
                                                                 .form-group
                                                                     label(for='p_discount_percentage') Phần trăm giảm giá
                                                                     input#p_discount_percentage.form-control(type='text' value=`${laptop.discount_percentage}`)

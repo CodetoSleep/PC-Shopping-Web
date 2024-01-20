@@ -8,11 +8,8 @@ if (passForm) {
             password: document.querySelector('#newPassword').value,
             passwordConfirm: document.querySelector('#newPasswordConfirm')
                 .value,
+            realPass: passForm.dataset.pass,
         };
-        if(data.passwordCurrent != passForm.dataset.pass) {
-            showAlert('error', 'Mật khẩu hiện tại sai');
-            return;
-        }
         if(data.password != data.passwordConfirm) {
             showAlert('error', 'Mật khẩu mới không trùng với mật khẩu xác nhận');
             return;
@@ -23,9 +20,13 @@ if (passForm) {
                 url: '/api/users/updatePassword',
                 data,
             });
+            console.log(status)
             if (status.data.status === 'success') {
                 showAlert('success', 'Cập nhật mật khẩu thành công');
                 passForm.dataset.pass = data.password
+            }
+            else {
+                showAlert('warning', 'Mật Khẩu hiện tại chưa đúng');
             }
         })();
     };

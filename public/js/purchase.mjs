@@ -25,7 +25,7 @@ const purchaseLocal = (item) => async () => {
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].product_id === item.product_id) {
             showAlert('success', 'Thêm vào giỏ thành công');
-            //return;
+            return;
         }
     }
     cart.push(item);

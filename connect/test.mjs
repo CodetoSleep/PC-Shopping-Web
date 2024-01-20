@@ -48,6 +48,18 @@ const user = {
   p_password:'123456',
   p_password_confirm:'123456',
 }
+
+const filterProduct = {
+  page: 1,
+  minPrice: 0,
+  maxPrice: 99999999,
+  ram: null,
+  nsx: 'Lenovo',
+  sortPrice: 1,
+  sortRating: 1,
+  sortSold: 1,
+  available: 1
+}
 const test =  async () => {
   // const result = await userControllers.after_insert_user();
   // const result = await deliveryControllers.changeItemQuantity({
@@ -55,7 +67,7 @@ const test =  async () => {
   //   p_user_id: 9,
   //   dif: 1
   // })
-  const result = await deliveryControllers.getCart(9);
+  const result = await productControllers.getAllProducts(filterProduct)
   console.log(result)
 }
 test();

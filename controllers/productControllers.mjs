@@ -11,7 +11,6 @@ const createProduct = catchAsync(async (req, res, next) => {
             status: "success"
         })    
     } else {
-        // console.log(message)
         res.status(500).json({
             status: "error"
         })
@@ -24,7 +23,6 @@ const updateProduct = catchAsync(async (req, res, next) => {
             status: "success"
         })    
     } else {
-        // console.log(message)
         res.status(500).json({
             status: "error"
         })
@@ -32,13 +30,13 @@ const updateProduct = catchAsync(async (req, res, next) => {
 })
 const deleteProduct = catchAsync(async (req, res, next) => {
     console.log(req.body)
-    const message = await dbController.deleteProduct(req.body.id);
+    const {message} = await dbController.deleteProduct(req.body.id);
+    console.log(message);
     if(message === 'success') {
         res.status(200).json({
             status: "success"
         })    
     } else {
-        // console.log(message)
         res.status(500).json({
             status: "error"
         })

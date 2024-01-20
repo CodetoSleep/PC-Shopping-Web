@@ -6,13 +6,12 @@ import deliControllers from '../connect/delivery_connect.mjs';
 const getOverview = catchAsync(async (req, res) => {
     const page = req.query.page || 1;
     const {products: laptops, message} = await productControllers.getAllProducts(req.query);
-    //console.log(laptops);
     if(message == 'error') {
         return next(new appError("The is no product founded"), 404);
     }
 
     res.status(200).render('overview', {
-        title: 'Laptop An Phát 2023 Ưu đãi ngập tràn',
+        title: 'Laptop An Phát 2024 Ưu đãi ngập tràn',
         laptops,
         pageCurrent: parseInt(page),
         req,
@@ -20,8 +19,6 @@ const getOverview = catchAsync(async (req, res) => {
 });
 const getProduct = catchAsync(async (req, res, next) => {
     const product = await productControllers.getProduct(parseInt(req.params.id));
-    console.log('.....')
-    console.log(product.product)
     if (!product) next(new appError('There is no product with that name', 404));
     res.status(200).render('product', {
         title: product.product? product.product.product_name : "Không tìm thấy sản phẩm",
@@ -70,15 +67,12 @@ const getMyCart = catchAsync(async (req, res) => {
     } else {
         products = null;
     }
-    console.log(products);
     let delivery;
     if(req.user) {
         delivery = await deliControllers.getDelivery(req.user.user_id);
     } else {
         delivery = null
     }
-    // console.log(products);
-    console.log(delivery)
     res.status(200).render('cart', {
         title: 'My cart',
         products,

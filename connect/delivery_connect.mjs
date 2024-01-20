@@ -23,7 +23,7 @@ function addItemToCart(
     p_product_id}
 ) {
     return new Promise((resolve, reject) => {
-        const sql = `CALL addItemToCart(?,?)`;
+        const sql = `CALL addItemToCart1(?,?)`;
         connection.query(
             sql, [p_product_id, p_user_id],
             (error, results, fields) => {

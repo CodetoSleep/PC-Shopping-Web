@@ -1,5 +1,4 @@
 import express from 'express';
-import { protect } from '../controllers/authiencationControllers.mjs';
 import {
     deleteProduct,
     updateProduct,

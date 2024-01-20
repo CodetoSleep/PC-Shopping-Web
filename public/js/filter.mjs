@@ -31,8 +31,8 @@ const addQuery = (attributes) => () => {
     const url = `${req.dataset.path}?${queryString}`;
     window.location.replace(url);
 };
-ascPriceBtn.onclick = addQuery({ sortPrice: 1 });
-desPriceBtn.onclick = addQuery({ sortPrice: 0 });
+ascPriceBtn.onclick = addQuery({ sortPrice: 0 });
+desPriceBtn.onclick = addQuery({ sortPrice: 1 });
 desRateBtn.onclick = addQuery({ sortRating: 1 });
 availableBtn.onclick = addQuery({ available: 1 });
 cpuBtns.forEach((btn) => {

@@ -27,7 +27,7 @@ block content
                             a: button(type="button" class="btn btn-light m-1 price-filter" data-maxprice= "10000000" data-minprice = "0" ) < 10 triệu
                             a: button(type="button" class="btn btn-light m-1 price-filter" data-maxprice= "15000000" data-minprice = "10000000" ) 10 - 15 triệu
                             a: button(type="button" class="btn btn-light m-1 price-filter" data-maxprice= "20000000" data-minprice = "15000000" ) 15 - 20 triệu
-                            a: button(type="button" class="btn btn-light m-1 price-filter" data-maxprice= "100000000" data-minprice = "20000000" ) > 20 triệu                         
+                            a: button(type="button" class="btn btn-light m-1 price-filter" data-maxprice= "90000000" data-minprice = "20000000" ) > 20 triệu                         
                     .row.align-items-center.d-none.d-sm-block
                         h6.col-xl-2 Dung lượng RAM
                         .col-xl-10(class="btn-group" role="group" aria-label="Button group")
@@ -43,7 +43,7 @@ block content
                                 a.dropdown-item.price-filter(data-maxprice= "10000000" data-minprice = "0") <= 10 triệu
                                 a.dropdown-item.price-filter(data-maxprice= "15000000" data-minprice = "10000000") 10 triệu - 15 triệu
                                 a.dropdown-item.price-filter(data-maxprice= "20000000" data-minprice = "15000000") 15 triệu - 20 triệu
-                                a.dropdown-item.price-filter(data-maxprice= "100000000" data-minprice = "20000000") >= 20 triệu
+                                a.dropdown-item.price-filter(data-maxprice= "90000000" data-minprice = "20000000") >= 20 triệu
                         .dropdown.mx-1
                             a.btn.btn-secondary.dropdown-toggle(href="#" role="button" data-toggle="dropdown" aria-expanded="false") Hãng
                             .dropdown-menu
@@ -83,7 +83,7 @@ block content
                             each laptop in laptops 
                                 .product-card.col-xl-3.col-md-4.col-sm-6.col-12
                                     .card.my-2
-                                        a.border-bottom.border-secondary(href=`/${laptop.product_id}`): img.card-img-top(src=`/laptop/${laptop.image_name}` alt="laptop")
+                                        a.border-bottom.border-secondary(href=`/${laptop.product_id}`): img.card-img-top(src=`/laptop/${laptop.image_name != null? laptop.image_name : 'default.jpg'}` alt="laptop")
                                         .card-body.text-truncate
                                             span.small= laptop.product_name
                                             span.small (#{laptop.cpu} | #{laptop.ram}GB | #{laptop.ssd}GB)
