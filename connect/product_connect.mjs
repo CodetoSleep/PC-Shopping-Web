@@ -92,7 +92,7 @@ function getProduct(productId) {
 function getAllProducts({page = 1, minPrice = 0, maxPrice = 99999999, ram = null, nsx = null, sortPrice = 1, sortRating= 1, sortSold= 1, available = 1}) {
   console.log(parseFloat(page), parseFloat(minPrice), parseFloat(maxPrice), ram, nsx, parseInt(sortPrice), parseInt(sortRating), parseInt(sortSold), parseInt(available));
   return new Promise((resolve, reject) => {
-    const sql = 'CALL getAllProducts1(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'CALL getAllProducts(?, ?, ?, ?, ?, ?, ?, ?, ?)';
     connection.query(sql, [parseFloat(page), parseFloat(minPrice), parseFloat(maxPrice), ram, nsx, parseInt(sortPrice), parseInt(sortRating), parseInt(sortSold), parseInt(available)], (err, result) => {
       if (err) {
         reject(err);

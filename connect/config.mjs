@@ -4,8 +4,8 @@ import mysql from 'mysql2';
 let connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "22102003",
-  database: "laptop",
+  password: "nam2442003",
+  database: "pc_shop",
   multipleStatements: true,
 });
 
