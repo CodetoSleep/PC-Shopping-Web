@@ -1,7 +1,7 @@
 # DB_Lab
 
 ## Project Introduction
-This is my project for the database lab course at HUST. \\
+This is my project for the database lab course at HUST. 
 In this project we have built an website of a pc shop which is inspired from an existed website. 
 
 ### Features on website
